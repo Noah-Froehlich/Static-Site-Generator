@@ -1,4 +1,5 @@
-from enum import Enum#
+from enum import Enum
+from htmlnode import LeafNode
 
 TextType = Enum('TextType',['NORMAL','BOLD','ITALIC','CODE','LINK','IMAGE'])
 
