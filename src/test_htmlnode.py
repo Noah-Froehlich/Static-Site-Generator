@@ -1,5 +1,7 @@
 import unittest
 from htmlnode import HTMLNode, LeafNode, ParrentNode
+from textnode import TextNode,TextType
+from utility import text_node_to_html_node
 
 class TESTHTMLNode(unittest.TestCase):
      def test_eq(self):
@@ -35,6 +37,27 @@ class TESTParrentNode(unittest.TestCase):
         child_node = ParrentNode("span", [grandchild_node])
         parent_node = ParrentNode("div", [child_node])
         self.assertEqual(parent_node.to_html(),"<div><span><b>grandchild</b></span></div>",)
+
+class TESTTextNodeConverion(unittest.TestCase):
+    def test_eq(self):
+        node = TextNode("This is a text node", TextType.NORMAL)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
+        node2 = TextNode("This is a Link",TextType.LINK,"www.google.com")
+        html_node2 = text_node_to_html_node(node2)
+        self.assertEqual(html_node2.tag,"a")
+        self.assertEqual(html_node2.props,{"href": "www.google.com"})
+        node3 = TextNode("Bold Text",TextType.BOLD)
+        html_node3 = text_node_to_html_node(node3)
+        self.assertEqual(html_node3.tag,"b")
+        node4 = TextNode("Hello World",TextType.IMAGE,"www.boot.dev")
+        html_node4 = text_node_to_html_node(node4)
+        self.assertEqual(html_node4.tag,"img")
+        self.assertEqual(html_node4.props,{"src": "www.boot.dev","alt":"Hello World"})
+
+
+
 
 
 if __name__ == "__main__":
