@@ -1,7 +1,7 @@
 import unittest
 from htmlnode import HTMLNode, LeafNode, ParrentNode
 from textnode import TextNode,TextType
-from utility import text_node_to_html_node,split_nodes_delimiter
+from utility import *
 
 class TESTTextNodeConverion(unittest.TestCase):
     def test_eq(self):
@@ -47,6 +47,21 @@ class TESTSplitNodes(unittest.TestCase):
         after_italic = split_nodes_delimiter(after_bold, "_", TextType.ITALIC)
         expected4 = [TextNode("Some ", TextType.NORMAL),TextNode("bold", TextType.BOLD),TextNode(" and ", TextType.NORMAL),TextNode("italic", TextType.ITALIC),TextNode(" text", TextType.NORMAL),]
         self.assertEqual(expected4,after_italic)
+
+class TESTExtraction(unittest.TestCase):
+    def test_eq(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        result = extract_markdown_images(text)
+        expected = [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
+        self.assertEqual(result,expected)
+
+        text2 = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        result2 = extract_markdown_links(text2)
+        expected2 = [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")]
+        self.assertEqual(result2,expected2)
+
+        matches = extract_markdown_images("This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)")
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
 
 if __name__ == "__main__":
     unittest.main() 
