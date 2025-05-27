@@ -121,3 +121,20 @@ def text_to_textnodes(text):
     nodes = split_nodes_image(nodes)
     nodes = split_nodes_link(nodes)
     return nodes
+
+def markdown_to_blocks(markdown):
+    block = markdown.split("\n\n")
+    new_block = []
+    for i in block:
+        temp = i.strip()
+        striped_lines = temp.split("\n")
+        x = []
+        for line in striped_lines:
+            striped_line = line.strip()
+            x.append(striped_line)
+        temp = "\n".join(x)
+        if temp == "":
+            continue
+        else:
+            new_block.append(temp)
+    return new_block

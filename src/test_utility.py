@@ -164,5 +164,53 @@ class TESTTexttoNodes(unittest.TestCase):
     ]
         self.assertEqual(expected,result)
 
+class TESTMarkdownBlocks(unittest.TestCase):
+    def test_markdown_to_blocks(self):
+        md = """
+                This is **bolded** paragraph
+
+                This is another paragraph with _italic_ text and `code` here
+                This is the same paragraph on a new line
+
+                - This is a list
+                - with items
+                """
+        blocks = markdown_to_blocks(md)
+        expected = [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items"]
+        self.assertEqual(expected,blocks)
+
+    def test_markdown_to_blocks(self):
+        md = """
+            This i good Code
+
+            And I Think that this are 2 Line
+            Paragraphs
+
+            - Test Lsite 1
+            - Test Leise 2
+    """
+        blocks = markdown_to_blocks(md)
+        
+        expected = ["This i good Code","And I Think that this are 2 Line\nParagraphs","- Test Lsite 1\n- Test Leise 2"]
+        self.assertEqual(expected,blocks)
+
+    def test_more_Lists(self):
+        md = """
+            This is a **Text**
+
+            - List 1
+            - List 2
+            - List 3
+
+            - Neue Liste 1
+            - Neue Liste 2
+        """
+        blocks = markdown_to_blocks(md)
+        expected = ["This is a **Text**","- List 1\n- List 2\n- List 3","- Neue Liste 1\n- Neue Liste 2"]
+        self.assertEqual(expected,blocks)
+
 if __name__ == "__main__":
     unittest.main() 
