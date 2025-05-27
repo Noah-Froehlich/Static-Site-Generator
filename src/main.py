@@ -1,7 +1,6 @@
 from textnode import TextNode, TextType
+from utility import *
 
 def main():
-    text_Node = TextNode("Hello World",TextType.BOLD, "https://www.boot.dev")
-    print(text_Node)
-
+    pass
 main()
