@@ -10,7 +10,7 @@ def extract_title(markdown):
             return line[2:]
     raise ValueError("no title found")
 
-def generate_page(from_path,template_path,dest_path):
+def generate_page(from_path,template_path,dest_path,basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     
     file = open(from_path,"r")
@@ -27,6 +27,8 @@ def generate_page(from_path,template_path,dest_path):
 
     template = template.replace("{{ Title }}", title)
     template = template.replace("{{ Content }}",html)
+    template = template.replace('href="/', 'href="' + basepath)
+    template = template.replace('src="/', 'src="' + basepath)
 
     path  = os.path.dirname(dest_path)
     if path != "":
@@ -34,12 +36,12 @@ def generate_page(from_path,template_path,dest_path):
     dest_file = open(dest_path,"w")
     dest_file.write(template)
 
-def generate_page_recursive(dir_path_content, template_path,dest_dir_path):
+def generate_page_recursive(dir_path_content, template_path,dest_dir_path,basepath):
     for file in os.listdir(dir_path_content):
         path_from = os.path.join(dir_path_content,file)
         path_dest = os.path.join(dest_dir_path,file)
         if os.path.isfile(path_from):
             path_dest = Path(path_dest).with_suffix(".html")
-            generate_page(path_from, template_path, path_dest)
+            generate_page(path_from, template_path, path_dest,basepath)
         else:
-            generate_page_recursive(path_from,template_path,path_dest)
+            generate_page_recursive(path_from,template_path,path_dest,basepath)
